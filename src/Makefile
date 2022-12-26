@@ -883,6 +883,9 @@ profileclean:
 	@rm -f stockfish.res
 	@rm -f ./-lstdc++.res
 
+iwyu: net config-sanity objclean
+	$(MAKE) ARCH=$(ARCH) COMP=clang -k CXX=include-what-you-use CXXFLAGS="-stdlib=libc++ -Xiwyu --comment_style=long -Xiwyu --mapping=stockfish.imp -Xiwyu --error" $(OBJS)
+
 # set up shell variables for the net stuff
 netvariables:
 	$(eval nnuenet := $(shell grep EvalFileDefaultName evaluate.h | grep define | sed 's/.*\(nn-[a-z0-9]\{12\}.nnue\).*/\1/'))
