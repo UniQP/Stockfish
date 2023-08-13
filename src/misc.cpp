@@ -16,6 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "misc.h"
+
 #ifdef _WIN32
 #if _WIN32_WINNT < 0x0601
 #undef  _WIN32_WINNT
@@ -27,6 +29,7 @@
 #endif
 
 #include <windows.h>
+
 // The needed Windows API for processor groups could be missed from old Windows
 // versions, so instead of calling them directly (forcing the linker to resolve
 // the calls at compile time), try to load them at runtime. To do this we need
@@ -44,17 +47,19 @@ using fun8_t = bool(*)(HANDLE, BOOL, PTOKEN_PRIVILEGES, DWORD, PTOKEN_PRIVILEGES
 }
 #endif
 
+#include <atomic>
 #include <cmath>
 #include <cstdlib>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <mutex>
 #include <sstream>
 #include <string_view>
-#include <vector>
+
+#include "types.h"
 
 #if defined(__linux__) && !defined(__ANDROID__)
-#include <stdlib.h>
 #include <sys/mman.h>
 #endif
 
@@ -62,9 +67,6 @@ using fun8_t = bool(*)(HANDLE, BOOL, PTOKEN_PRIVILEGES, DWORD, PTOKEN_PRIVILEGES
 #define POSIXALIGNEDALLOC
 #include <stdlib.h>
 #endif
-
-#include "misc.h"
-#include "thread.h"
 
 namespace Stockfish {
 
@@ -730,9 +732,11 @@ void bindThisThread(size_t idx) {
 
 #ifdef _WIN32
 #include <direct.h>
+
 #define GETCWD _getcwd
 #else
 #include <unistd.h>
+
 #define GETCWD getcwd
 #endif
 
