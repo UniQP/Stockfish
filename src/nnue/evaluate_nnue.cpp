@@ -18,6 +18,8 @@
 
 // Code for calculating NNUE evaluation function
 
+#include <cmath>
+#include <cstdlib>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -224,7 +226,7 @@ namespace Stockfish::Eval::NNUE {
 
     buffer[0] = (v < 0 ? '-' : v > 0 ? '+' : ' ');
 
-    int cp = std::abs(UCI::to_cp(v));
+    int cp = abs(UCI::to_cp(v));
     if (cp >= 10000)
     {
         buffer[1] = '0' + cp / 10000; cp %= 10000;

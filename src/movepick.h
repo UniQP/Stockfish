@@ -20,6 +20,7 @@
 #define MOVEPICK_H_INCLUDED
 
 #include <array>
+#include <cstdlib>
 #include <limits>
 #include <type_traits>
 

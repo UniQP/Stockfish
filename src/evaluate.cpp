@@ -18,10 +18,11 @@
 
 #include <algorithm>
 #include <cassert>
+#include <cstdlib>
 #include <fstream>
 #include <iomanip>
-#include <sstream>
 #include <iostream>
+#include <sstream>
 #include <streambuf>
 #include <vector>
 

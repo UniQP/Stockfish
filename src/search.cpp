@@ -19,6 +19,7 @@
 #include <algorithm>
 #include <cassert>
 #include <cmath>
+#include <cstdlib>
 #include <cstring>   // For std::memset
 #include <iostream>
 #include <sstream>
@@ -353,7 +354,7 @@ void Thread::search() {
           beta  = std::min(prev + delta, VALUE_INFINITE);
 
           // Adjust optimism based on root move's previousScore
-          int opt = 109 * prev / (std::abs(prev) + 141);
+          int opt = 109 * prev / (abs(prev) + 141);
           optimism[ us] = Value(opt);
           optimism[~us] = -optimism[us];
 

@@ -18,6 +18,7 @@
 
 #include <cassert>
 #include <cmath>
+#include <cstdlib>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -326,7 +327,7 @@ std::string UCI::value(Value v) {
       ss << "cp " << UCI::to_cp(v);
   else if (abs(v) < VALUE_MATE_IN_MAX_PLY)
   {
-      const int ply = VALUE_MATE_IN_MAX_PLY - 1 - std::abs(v);  // recompute ss->ply
+      const int ply = VALUE_MATE_IN_MAX_PLY - 1 - abs(v);  // recompute ss->ply
       ss << "cp " << (v > 0 ? 20000 - ply : -20000 + ply);
   }
   else
