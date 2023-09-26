@@ -14,7 +14,7 @@ jobs:
     if: github.event.workflow_run.event == 'pull_request'
     steps:
       - name: Show workflow_run
-        run: echo ${{ github.event.workflow_run }}
+        run: echo '${{ github.event.workflow_run }}'
       - name: Read context
         id: set-result
         uses: actions/github-script@v6
@@ -23,7 +23,7 @@ jobs:
           script: |
             return context.payload.workflow_run
       - name: Show workflow_run
-        run: echo "${{steps.set-result.outputs.result}}"
+        run: echo '${{ steps.set-result.outputs.result }}'
       - name: 'Comment on PR'
         uses: actions/github-script@v6
         if: github.event.workflow_run.conclusion != 'success'
