@@ -18,6 +18,7 @@
 
 #include "benchmark.h"
 
+#include <array>
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
