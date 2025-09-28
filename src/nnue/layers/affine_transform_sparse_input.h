@@ -23,11 +23,13 @@
 
 #include <algorithm>
 #include <cstdint>
+#include <cstddef>
 #include <iostream>
 
 #include "../../bitboard.h"
 #include "../simd.h"
 #include "../nnue_common.h"
+#include "affine_transform.h"
 
 /*
   This file contains the definition for a fully connected layer (aka affine transform) with block sparse input.
@@ -287,12 +289,18 @@ class AffineTransformSparseInput {
         for (IndexType k = 0; k < NumRegs; ++k)
             acc[k] = biasvec[k];
 
-        for (IndexType j = 0; j < count; ++j)
+        auto* start = nnz;
+        auto* end   = nnz + count;
+
+        // convince GCC to not do weird pointer arithmetic in the following loop
+        const std::int8_t* weights_cp = weights;
+
+        while (start < end)
         {
-            const auto    i  = nnz[j];
-            const invec_t in = vec_set_32(input32[i]);
-            const auto    col =
-              reinterpret_cast<const invec_t*>(&weights[i * OutputDimensions * ChunkSize]);
+            const std::ptrdiff_t i = *start;
+            start++;
+            const invec_t in  = vec_set_32(input32[i]);
+            const auto    col = (const invec_t*) (&weights_cp[i * OutputDimensions * ChunkSize]);
             for (IndexType k = 0; k < NumRegs; ++k)
                 vec_add_dpbusd_32(acc[k], in, col[k]);
         }
